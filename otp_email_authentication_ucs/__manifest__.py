@@ -3,14 +3,14 @@
 
 {
     'name': 'OTP & Email Authentication | Email OTP Authentication | OTP Authentication | Email Authentication | Two-Factor Authentication (2FA)',
-    'version': '18.0.1.0.0',
+    'version': '17.0.1.0.0',
     'category': 'Authentication / Security',
-    'summary': 'Secure OTP & Email Authentication / Two-Factor Authentication (2FA) for Odoo 18',
+    'summary': 'Secure OTP & Email Authentication / Two-Factor Authentication (2FA) for Odoo 17',
     'description': """
 OTP & Email Authentication
 ================================
 
-Adds secure Email-based One-Time Password (OTP) verification to the Odoo 18 login pipeline.
+Adds secure Email-based One-Time Password (OTP) verification to the Odoo 17 login pipeline.
 
 Key Features:
 -------------
