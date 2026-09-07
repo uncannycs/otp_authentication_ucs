@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- List View -->
+        <record id="view_auth_otp_log_tree" model="ir.ui.view">
+            <field name="name">auth.otp.log.list</field>
+            <field name="model">auth.otp.log</field>
+            <field name="arch" type="xml">
+                <list string="Email OTP Audit Logs" create="false" edit="false">
+                    <field name="date"/>
+                    <field name="user_id"/>
+                    <field name="event" widget="badge" decoration-info="event in ('otp_generated', 'otp_sent', 'otp_resent')" decoration-success="event == 'otp_verified'" decoration-warning="event in ('invalid_otp', 'otp_expired')" decoration-danger="event in ('max_attempts_exceeded', 'auth_failed', 'email_failed')"/>
+                    <field name="result" widget="badge" decoration-success="result == 'success'" decoration-danger="result == 'failure'"/>
+                    <field name="ip_address"/>
+                    <field name="attempt_count"/>
+                    <field name="failure_reason"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_auth_otp_log_form" model="ir.ui.view">
+            <field name="name">auth.otp.log.form</field>
+            <field name="model">auth.otp.log</field>
+            <field name="arch" type="xml">
+                <form string="Email OTP Audit Log" create="false" edit="false">
+                    <sheet>
+                        <group>
+                            <group string="Log Details">
+                                <field name="date"/>
+                                <field name="user_id"/>
+                                <field name="event"/>
+                                <field name="result"/>
+                                <field name="attempt_count"/>
+                            </group>
+                            <group string="Client Environment">
+                                <field name="ip_address"/>
+                                <field name="user_agent"/>
+                                <field name="failure_reason"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_auth_otp_log" model="ir.actions.act_window">
+            <field name="name">Authentication Logs</field>
+            <field name="res_model">auth.otp.log</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <!-- Menu -->
+        <menuitem id="menu_auth_otp_log"
+                  name="Authentication Logs"
+                  parent="menu_email_otp_root"
+                  action="action_auth_otp_log"
+                  sequence="20"/>
+
+    </data>
+</odoo>

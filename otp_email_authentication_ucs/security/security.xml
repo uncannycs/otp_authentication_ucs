@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- Module Category -->
+        <record id="module_category_auth_otp" model="ir.module.category">
+            <field name="name">OTP &amp; Email Authentication</field>
+            <field name="description">Security and management access for Email OTP authentication.</field>
+            <field name="sequence">25</field>
+        </record>
+
+        <!-- Security Group: Admin -->
+        <record id="group_auth_otp_admin" model="res.groups">
+            <field name="name">Email OTP Administrator</field>
+            <field name="user_ids" eval="[Command.link(ref('base.user_root')), Command.link(ref('base.user_admin'))]"/>
+            <field name="comment">Full access to manage Email OTP settings, view challenge records, and access audit logs.</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="res_config_settings_view_form_auth_otp" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.auth.otp</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="95"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="inside">
+                    <app data-string="OTP &amp; Email Authentication" string="OTP &amp; Email Authentication" name="otp_email_authentication_ucs">
+                        <block title="OTP &amp; Email Authentication" id="auth_otp_login_settings_block">
+                            <setting id="setting_enable_otp_login" help="Require two-factor Email OTP verification during user login.">
+                                <field name="enable_otp_login"/>
+                                <div class="content-group" invisible="not enable_otp_login">
+                                    <div class="row mt16">
+                                        <label for="otp_length" class="col-lg-4 o_light_label"/>
+                                        <field name="otp_length" required="enable_otp_login"/>
+                                    </div>
+                                    <div class="row mt8">
+                                        <label for="otp_expiration_minutes" class="col-lg-4 o_light_label"/>
+                                        <div class="col-lg-8 d-flex align-items-center">
+                                            <field name="otp_expiration_minutes" class="oe_inline mr4" required="enable_otp_login"/>
+                                            <span>minutes</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mt8">
+                                        <label for="otp_resend_cooldown" class="col-lg-4 o_light_label"/>
+                                        <div class="col-lg-8 d-flex align-items-center">
+                                            <field name="otp_resend_cooldown" class="oe_inline mr4" required="enable_otp_login"/>
+                                            <span>seconds</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mt8">
+                                        <label for="otp_max_attempts" class="col-lg-4 o_light_label"/>
+                                        <field name="otp_max_attempts" class="oe_inline" required="enable_otp_login"/>
+                                    </div>
+                                    <div class="row mt8">
+                                        <label for="otp_max_resend" class="col-lg-4 o_light_label"/>
+                                        <field name="otp_max_resend" class="oe_inline" required="enable_otp_login"/>
+                                    </div>
+                                </div>
+                            </setting>
+                        </block>
+                    </app>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

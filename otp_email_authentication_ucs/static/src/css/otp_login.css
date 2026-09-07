@@ -1,0 +1,74 @@
+/* OTP & Email Authentication Styling */
+
+.oe_login_form {
+    max-width: 420px !important;
+}
+
+.auth_otp_container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px 0;
+}
+
+.auth_otp_icon_wrapper {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: rgba(0, 160, 157, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth_otp_masked_email {
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    word-break: break-all;
+}
+
+.auth_otp_inputs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.auth_otp_digit_input {
+    width: 38px !important;
+    height: 48px !important;
+    font-size: 20px !important;
+    font-weight: 700 !weight;
+    color: #1E293B !important;
+    border: 2px solid #CBD5E1 !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+    padding: 0 !important;
+    transition: all 0.2s ease-in-out !important;
+    background-color: #FFFFFF !important;
+}
+
+.auth_otp_digit_input:focus {
+    border-color: #00A09D !important;
+    box-shadow: 0 0 0 3px rgba(0, 160, 157, 0.2) !important;
+    outline: none !important;
+}
+
+.auth_otp_digit_input.is-invalid {
+    border-color: #DC2626 !important;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+    .auth_otp_inputs {
+        gap: 4px;
+    }
+    
+    .auth_otp_digit_input {
+        width: 32px !important;
+        height: 42px !important;
+        font-size: 18px !important;
+    }
+}

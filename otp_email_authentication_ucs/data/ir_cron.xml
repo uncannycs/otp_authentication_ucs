@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Cron: Cleanup Expired OTP Records -->
+        <record id="ir_cron_clean_expired_otp_records" model="ir.cron">
+            <field name="name">Clean Expired OTP &amp; Email Authentication Records</field>
+            <field name="model_id" ref="model_company_auth_otp"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_cleanup_otp_records()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Cron: Cleanup Old OTP Audit Logs -->
+        <record id="ir_cron_clean_old_otp_audit_logs" model="ir.cron">
+            <field name="name">Clean Expired OTP Audit Logs</field>
+            <field name="model_id" ref="model_auth_otp_log"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_cleanup_audit_logs()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

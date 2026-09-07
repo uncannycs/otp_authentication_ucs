@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="otp_verification_form" name="Email OTP Verification Form">
+            <t t-call="web.login_layout">
+                <div class="oe_login_form auth_otp_container" style="max-width: 420px; width: 100%; margin: 0 auto;">
+                    <div class="text-center mb-4">
+                        <div class="auth_otp_icon_wrapper mb-3">
+                            <i class="fa fa-shield fa-3x text-primary"/>
+                        </div>
+                        <h3 class="font-weight-bold text-dark mb-1">Verify Your Identity</h3>
+                        <p class="text-muted small mb-0">
+                            We sent a verification code to your registered email address:
+                        </p>
+                        <p class="font-weight-bold text-primary mb-0 auth_otp_masked_email">
+                            <t t-out="masked_email"/>
+                        </p>
+                    </div>
+
+                    <t t-if="error">
+                        <div class="alert alert-danger" role="alert" style="font-size: 13px;">
+                            <i class="fa fa-exclamation-circle mr-1"/> <t t-out="error"/>
+                        </div>
+                    </t>
+
+                    <t t-if="notice">
+                        <div class="alert alert-success" role="alert" style="font-size: 13px;">
+                            <i class="fa fa-check-circle mr-1"/> <t t-out="notice"/>
+                        </div>
+                    </t>
+
+                    <form class="auth_otp_form mt-4" action="/web/otp/verify" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <t t-if="redirect">
+                            <input type="hidden" name="redirect" t-att-value="redirect"/>
+                        </t>
+                        <input type="hidden" id="otp_token_hidden" name="otp_token" value=""/>
+
+                        <!-- Digit Inputs Container -->
+                        <div class="d-flex justify-content-center align-items-center mb-4 auth_otp_inputs"
+                             t-att-data-length="otp_length">
+                            <t t-foreach="range(otp_length)" t-as="i">
+                                <input type="text"
+                                       class="form-control text-center auth_otp_digit_input"
+                                       maxlength="1"
+                                       inputmode="numeric"
+                                       pattern="[0-9]*"
+                                       autocomplete="off"
+                                       t-att-data-index="i"/>
+                            </t>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <button type="submit" class="btn btn-primary btn-block font-weight-bold py-2 w-100 shadow-sm" id="btn_verify_otp">
+                                Verify OTP
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Resend Container -->
+                    <div class="text-center mt-3 pt-3 border-top">
+                        <form action="/web/otp/resend" method="post" id="resend_otp_form" class="d-inline">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <t t-if="redirect">
+                                <input type="hidden" name="redirect" t-att-value="redirect"/>
+                            </t>
+                            <button type="submit"
+                                    id="btn_resend_otp"
+                                    class="btn btn-link btn-sm text-decoration-none"
+                                    t-att-disabled="cooldown_remaining &gt; 0 or (max_resend and resend_count &gt;= max_resend)">
+                                Resend OTP
+                            </button>
+                        </form>
+                        <div class="small text-muted mt-1" id="cooldown_container" t-att-data-remaining="cooldown_remaining">
+                            <t t-if="cooldown_remaining &gt; 0">
+                                Resend available in <span id="cooldown_timer_text" class="font-weight-bold text-dark"><t t-out="cooldown_remaining"/></span> seconds
+                            </t>
+                            <t t-elif="max_resend and resend_count &gt;= max_resend">
+                                Maximum resends reached
+                            </t>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a href="/web/login" class="small text-secondary">
+                            <i class="fa fa-arrow-left mr-1"/> Back to Login
+                        </a>
+                    </div>
+                </div>
+
+                <script type="text/javascript">
+                (function() {
+                    function initOTP() {
+                        var container = document.querySelector('.auth_otp_inputs');
+                        if (!container) return;
+
+                        var inputs = Array.prototype.slice.call(container.querySelectorAll('.auth_otp_digit_input'));
+                        var hiddenInput = document.getElementById('otp_token_hidden');
+                        var form = document.querySelector('.auth_otp_form');
+                        var resendBtn = document.getElementById('btn_resend_otp');
+                        var cooldownContainer = document.getElementById('cooldown_container');
+                        var timerText = document.getElementById('cooldown_timer_text');
+
+                        function syncToken() {
+                            if (hiddenInput) {
+                                hiddenInput.value = inputs.map(function(i) { return i.value; }).join('');
+                            }
+                        }
+
+                        if (inputs.length &gt; 0) {
+                            setTimeout(function() { inputs[0].focus(); }, 150);
+                        }
+
+                        inputs.forEach(function(input, idx) {
+                            input.addEventListener('keydown', function(e) {
+                                if (e.key === 'Backspace') {
+                                    if (!input.value &amp;&amp; idx &gt; 0) {
+                                        inputs[idx - 1].focus();
+                                        inputs[idx - 1].value = '';
+                                    } else {
+                                        input.value = '';
+                                    }
+                                    syncToken();
+                                    e.preventDefault();
+                                } else if (e.key === 'ArrowLeft' &amp;&amp; idx &gt; 0) {
+                                    inputs[idx - 1].focus();
+                                } else if (e.key === 'ArrowRight' &amp;&amp; idx &lt; inputs.length - 1) {
+                                    inputs[idx + 1].focus();
+                                }
+                            });
+
+                            input.addEventListener('input', function(e) {
+                                var clean = input.value.replace(/[^0-9]/g, '');
+                                input.value = clean ? clean.charAt(clean.length - 1) : '';
+
+                                if (input.value &amp;&amp; idx &lt; inputs.length - 1) {
+                                    inputs[idx + 1].focus();
+                                }
+                                syncToken();
+
+                                var allFilled = inputs.every(function(inp) { return inp.value.length === 1; });
+                                if (allFilled &amp;&amp; form) {
+                                    form.submit();
+                                }
+                            });
+
+                            input.addEventListener('paste', function(e) {
+                                e.preventDefault();
+                                var data = (e.clipboardData || window.clipboardData).getData('text') || '';
+                                var digits = data.replace(/[^0-9]/g, '').split('');
+
+                                if (digits.length &gt; 0) {
+                                    digits.forEach(function(d, dIdx) {
+                                        if (idx + dIdx &lt; inputs.length) {
+                                            inputs[idx + dIdx].value = d;
+                                        }
+                                    });
+
+                                    var nextFocus = Math.min(idx + digits.length, inputs.length - 1);
+                                    inputs[nextFocus].focus();
+                                    syncToken();
+
+                                    var allFilled = inputs.every(function(inp) { return inp.value.length === 1; });
+                                    if (allFilled &amp;&amp; form) {
+                                        form.submit();
+                                    }
+                                }
+                            });
+                        });
+
+                        // Live Countdown Timer
+                        if (cooldownContainer) {
+                            var secs = parseInt(cooldownContainer.getAttribute('data-remaining') || '0', 10);
+                            if (secs &gt; 0) {
+                                var timer = setInterval(function() {
+                                    secs -= 1;
+                                    if (timerText) {
+                                        timerText.textContent = secs;
+                                    }
+                                    if (secs &lt;= 0) {
+                                        clearInterval(timer);
+                                        if (resendBtn) {
+                                            resendBtn.removeAttribute('disabled');
+                                            resendBtn.classList.remove('disabled');
+                                        }
+                                        cooldownContainer.innerHTML = '&lt;span class="text-success small"&gt;&lt;i class="fa fa-check-circle mr-1"&gt;&lt;/i&gt;You can request a new code now.&lt;/span&gt;';
+                                    }
+                                }, 1000);
+                            }
+                        }
+                    }
+
+                    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                        initOTP();
+                    } else {
+                        document.addEventListener('DOMContentLoaded', initOTP);
+                    }
+                })();
+                </script>
+            </t>
+        </template>
+
+        <template id="otp_error_page" name="Email OTP Error Page">
+            <t t-call="web.login_layout">
+                <div class="oe_login_form text-center p-4">
+                    <div class="text-danger mb-3">
+                        <i class="fa fa-exclamation-triangle fa-3x"/>
+                    </div>
+                    <h4 class="font-weight-bold text-dark mb-3">Authentication Error</h4>
+                    <div class="alert alert-danger" role="alert" style="font-size: 14px;">
+                        <t t-out="error"/>
+                    </div>
+                    <div class="mt-4">
+                        <a href="/web/login" class="btn btn-secondary btn-block w-100">
+                            Back to Login
+                        </a>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>

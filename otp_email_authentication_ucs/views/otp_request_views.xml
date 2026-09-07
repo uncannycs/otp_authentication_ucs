@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- List View -->
+        <record id="view_company_auth_otp_tree" model="ir.ui.view">
+            <field name="name">company.auth.otp.list</field>
+            <field name="model">company.auth.otp</field>
+            <field name="arch" type="xml">
+                <list string="OTP Verification Requests" create="false" edit="false">
+                    <field name="created_at"/>
+                    <field name="user_id"/>
+                    <field name="email"/>
+                    <field name="state" widget="badge" decoration-info="state == 'pending'" decoration-success="state == 'verified'" decoration-danger="state in ('failed', 'expired')" decoration-muted="state == 'cancelled'"/>
+                    <field name="attempts"/>
+                    <field name="max_attempts"/>
+                    <field name="resend_count"/>
+                    <field name="expires_at"/>
+                    <field name="ip_address"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_company_auth_otp_form" model="ir.ui.view">
+            <field name="name">company.auth.otp.form</field>
+            <field name="model">company.auth.otp</field>
+            <field name="arch" type="xml">
+                <form string="OTP Verification Request" create="false" edit="false">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="pending,verified,expired,failed,cancelled"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group string="User &amp; Recipient">
+                                <field name="user_id"/>
+                                <field name="email"/>
+                                <field name="ip_address"/>
+                                <field name="user_agent"/>
+                            </group>
+                            <group string="Challenge Metrics">
+                                <field name="created_at"/>
+                                <field name="expires_at"/>
+                                <field name="verified_at"/>
+                                <field name="attempts"/>
+                                <field name="max_attempts"/>
+                                <field name="resend_count"/>
+                                <field name="last_sent_at"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_company_auth_otp" model="ir.actions.act_window">
+            <field name="name">OTP Verification Requests</field>
+            <field name="res_model">company.auth.otp</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <!-- Menus -->
+        <menuitem id="menu_email_otp_root"
+                  name="OTP &amp; Email Authentication"
+                  parent="base.menu_custom"
+                  sequence="80"
+                  groups="otp_email_authentication_ucs.group_auth_otp_admin,base.group_system"/>
+
+        <menuitem id="menu_company_auth_otp"
+                  name="OTP Challenges"
+                  parent="menu_email_otp_root"
+                  action="action_company_auth_otp"
+                  sequence="10"/>
+
+    </data>
+</odoo>

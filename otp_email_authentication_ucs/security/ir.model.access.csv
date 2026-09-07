@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_company_auth_otp_admin,company.auth.otp.admin,model_company_auth_otp,otp_email_authentication_ucs.group_auth_otp_admin,1,1,1,1
+access_auth_otp_log_admin,auth.otp.log.admin,model_auth_otp_log,otp_email_authentication_ucs.group_auth_otp_admin,1,1,1,1

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_users_form_inherit_auth_otp" model="ir.ui.view">
+            <field name="name">res.users.form.inherit.auth.otp</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Email OTP Security" name="page_email_otp_security" groups="base.group_system,otp_email_authentication_ucs.group_auth_otp_admin">
+                        <group string="Two-Factor Authentication">
+                            <field name="otp_enabled"/>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+    </data>
+</odoo>
