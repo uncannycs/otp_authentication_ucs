@@ -1,12 +1,12 @@
 # OTP & Email Authentication (`otp_email_authentication_ucs`)
 
-Developed by **Uncanny Consulting Services LLP (UCS)** for **Odoo 19.0**.
+Developed by **Uncanny Consulting Services LLP (UCS)** for **Odoo 18.0**.
 
 ---
 
 ## Overview
 
-**OTP & Email Authentication** introduces secure, multi-factor Email OTP verification to the Odoo 19 login workflow. It ensures that after entering correct primary credentials (login & password), users with OTP enabled must enter a cryptographically generated 4, 6, or 8 digit One-Time Password sent to their registered email before gaining access to the Odoo backend or portal.
+**OTP & Email Authentication** introduces secure, multi-factor Email OTP verification to the Odoo 18 login workflow. It ensures that after entering correct primary credentials (login & password), users with OTP enabled must enter a cryptographically generated 4, 6, or 8 digit One-Time Password sent to their registered email before gaining access to the Odoo backend or portal.
 
 ---
 
@@ -49,7 +49,7 @@ Developed by **Uncanny Consulting Services LLP (UCS)** for **Odoo 19.0**.
 
 ## Installation
 
-1. Place `otp_email_authentication_ucs` into your Odoo 19 `custom/apps` or `addons` directory.
+1. Place `otp_email_authentication_ucs` into your Odoo 18 `custom/apps` or `addons` directory.
 2. Restart Odoo server and update App List (`Settings -> Activate Developer Mode -> Update Apps List`).
 3. Search for **OTP & Email Authentication** and click **Install**.
 
@@ -72,7 +72,7 @@ Developed by **Uncanny Consulting Services LLP (UCS)** for **Odoo 19.0**.
 
 ## Technical Architecture
 
-- **Odoo 19 MFA Hooks**: Implements `_mfa_type()`, `_mfa_url()`, and `_check_credentials()` on `res.users`.
+- **Odoo 18 MFA Hooks**: Implements `_mfa_type()`, `_mfa_url()`, and `_check_credentials()` on `res.users`.
 - **Session Isolation**: Keeps session in partial state (`pre_uid`) until server-side verification succeeds. `request.session.finalize()` is executed only upon valid OTP submission.
 - **CSRF Protection**: All POST endpoints (`/web/otp/verify` and `/web/otp/resend`) mandate valid Odoo CSRF tokens.
 
@@ -96,7 +96,7 @@ Tests cover:
 
 ## Compatibility
 
-- **Odoo Version**: 19.0 (Community & Enterprise)
+- **Odoo Version**: 18.0 (Community & Enterprise)
 - **License**: LGPL-3
 
 ---

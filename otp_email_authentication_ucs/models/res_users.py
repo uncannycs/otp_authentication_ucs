@@ -23,7 +23,7 @@ class ResUsers(models.Model):
         return super().SELF_READABLE_FIELDS + ['otp_enabled']
 
     def _mfa_type(self):
-        """Hook into Odoo 19 MFA pipeline to declare email_otp type."""
+        """Hook into Odoo 18 MFA pipeline to declare email_otp type."""
         r = super()._mfa_type()
         if r is not None:
             return r
