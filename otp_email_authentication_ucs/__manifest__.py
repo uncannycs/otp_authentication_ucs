@@ -50,7 +50,7 @@ Key Features:
     'images': [
         'static/description/banner.gif',
     ],
-    'price': 0,
+    'price': 60,
     'currency': 'USD',
     'installable': True,
     'application': True,
