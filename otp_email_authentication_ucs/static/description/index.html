@@ -24,7 +24,7 @@
                         <div class="d-flex align-items-center gap-2">
                             <img alt="Logo" class="shadow-sm" src="icon.png" style="height: 44px; border-radius: 10px">
                             <h5 class="mb-0 text-dark" style="font-family: 'Montserrat', sans-serif; font-size: 16px; line-height: 1.1; font-weight: 600; letter-spacing: -0.2px">
-                                OTP &amp; Email Authentication<br>UCS</h5>
+                                OTP &amp; Email Authentication</h5>
                         </div>
                         <!-- Mobile Right: Partner Badge -->
                         <div class="d-flex align-items-center">
@@ -37,7 +37,7 @@
                         <div class="d-none d-lg-flex align-items-center gap-3">
                             <img alt="Logo" class="shadow-sm" src="icon.png" style="height: 50px; border-radius: 10px">
                             <h5 class="mb-0 text-dark" style="font-family: 'Montserrat', sans-serif; font-size: 18px; line-height: 1.1; font-weight: 600; letter-spacing: -0.2px">
-                                OTP &amp; Email Authentication<br>UCS</h5>
+                                OTP &amp; Email Authentication</h5>
                         </div>
                         <!-- Middle: Tabs -->
                         <ul class="nav nav-underline justify-content-center border-0 mt-1 mt-lg-0" id="myTab" role="tablist">
@@ -1540,7 +1540,7 @@
                                     </h2>
                                     <div aria-labelledby="headingOne" class="accordion-collapse collapse" data-bs-parent="#faqAccordion" id="collapseOne">
                                         <div class="accordion-body text-muted">
-                                            OTP codes are never stored as plaintext in the database. When an OTP is generated, the system creates a 16-byte cryptographically secure random salt using <code style="color: #03305A">secrets.token_hex(16)</code> and computes a SHA-256 hash. During verification, the candidate token is hashed with the stored salt and verified using constant-time digest comparison (<code style="color: #03305A">secrets.compare_digest</code>) to protect against timing attacks and data exposure.
+                                            OTP codes are never stored as plaintext in the database. When an OTP is generated, the system creates a 16-byte cryptographically secure random salt and computes a SHA-256 hash. During verification, the candidate token is hashed with the stored salt and securely verified to protect against timing attacks and data exposure.
                                         </div>
                                     </div>
                                 </div>
@@ -1553,7 +1553,7 @@
                                     </h2>
                                     <div aria-labelledby="headingTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion" id="collapseTwo">
                                         <div class="accordion-body text-muted">
-                                            Yes. The module supports flexible dual-level enforcement. System administrators can enable OTP authentication globally via <strong>General Settings → Enable OTP &amp; Email Authentication</strong>, or selectively enable/disable the <code>Require OTP &amp; Email Authentication</code> toggle on individual user profiles (<code>res.users</code>).
+                                            Yes. The module supports flexible dual-level enforcement. System administrators can enable OTP authentication globally via <strong>General Settings → Enable OTP &amp; Email Authentication</strong>, or selectively enable/disable the <code>Require OTP &amp; Email Authentication</code> toggle on individual user profiles.
                                         </div>
                                     </div>
                                 </div>
@@ -1566,7 +1566,7 @@
                                     </h2>
                                     <div aria-labelledby="headingThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion" id="collapseThree">
                                         <div class="accordion-body text-muted">
-                                            The system features built-in brute-force protection. Administrators set a <strong>Maximum Verification Attempts</strong> threshold (default 5). Each invalid attempt increments the attempt counter and logs an <code>invalid_otp</code> audit record. Once the maximum threshold is reached, the challenge state automatically transitions to <code>failed</code> and invalidates further entries for that token.
+                                            The system features built-in brute-force protection. Administrators set a <strong>Maximum Verification Attempts</strong> threshold (default 5). Each invalid attempt increments the attempt counter and logs an audit record. Once the maximum threshold is reached, the challenge state automatically transitions to failed and invalidates further entries for that token.
                                         </div>
                                     </div>
                                 </div>
@@ -1592,7 +1592,7 @@
                                     </h2>
                                     <div aria-labelledby="headingFive" class="accordion-collapse collapse" data-bs-parent="#faqAccordion" id="collapseFive">
                                         <div class="accordion-body text-muted">
-                                            All OTP events (generation, email dispatch, resend, verification success, failed attempts, and timeouts) are logged in the dedicated Audit Logs table (<code>auth.otp.log</code>) along with timestamps, user IDs, client IP addresses, and User Agent strings. An automated Odoo cron job (<code>_cron_cleanup_audit_logs</code>) automatically purges old logs beyond the configured retention period (default 90 days).
+                                            All OTP events (generation, email dispatch, resend, verification success, failed attempts, and timeouts) are logged in the dedicated Audit Logs table along with timestamps, user IDs, client IP addresses, and User Agent strings. An automated scheduled action automatically purges old logs beyond the configured retention period (default 90 days).
                                         </div>
                                     </div>
                                 </div>
@@ -1605,7 +1605,7 @@
                                     </h2>
                                     <div aria-labelledby="headingSix" class="accordion-collapse collapse" data-bs-parent="#faqAccordion" id="collapseSix">
                                         <div class="accordion-body text-muted">
-                                            Each OTP challenge is assigned a strict lifespan (configurable in minutes, default 1 minute). If a user attempts to verify an expired token, the backend evaluation (<code>_verify_otp</code>) automatically updates the challenge state to <code>expired</code>, rejects authentication with an explicit notification, and logs an <code>otp_expired</code> audit event.
+                                            Each OTP challenge is assigned a strict lifespan (configurable in minutes, default 1 minute). If a user attempts to verify an expired token, the backend evaluation automatically updates the challenge state to expired, rejects authentication with an explicit notification, and logs an audit event.
                                         </div>
                                     </div>
                                 </div>
@@ -1618,7 +1618,7 @@
                                     </h2>
                                     <div aria-labelledby="headingSeven" class="accordion-collapse collapse" data-bs-parent="#faqAccordion" id="collapseSeven">
                                         <div class="accordion-body text-muted">
-                                            By default, when OTP authentication is active for a user, password-based RPC login endpoints enforce <code>_rpc_api_keys_only() = True</code>. External API integrations, scripts, and mobile connectors must use secure Odoo API Keys rather than standard user passwords, safeguarding web login channels without breaking automated background integrations.
+                                            External API integrations, scripts, and mobile connectors must use secure Odoo API Keys rather than standard user passwords, safeguarding web login channels without breaking automated background integrations.
                                         </div>
                                     </div>
                                 </div>
@@ -1631,7 +1631,7 @@
                                     </h2>
                                     <div aria-labelledby="headingEight" class="accordion-collapse collapse" data-bs-parent="#faqAccordion" id="collapseEight">
                                         <div class="accordion-body text-muted">
-                                            Yes. The OTP email notification relies on standard Odoo QWeb / Jinja2 email template definitions (<code>mail.template</code>). System administrators can easily customize the email layout, headers, messaging text, colors, and logo from <strong>Settings → Technical → Email Templates</strong>.
+                                            Yes. The OTP email notification relies on standard Odoo email template definitions. System administrators can easily customize the email layout, headers, messaging text, colors, and logo from <strong>Settings → Technical → Email Templates</strong>.
                                         </div>
                                     </div>
                                 </div>
@@ -1644,7 +1644,7 @@
                                     </h2>
                                     <div aria-labelledby="headingNine" class="accordion-collapse collapse" data-bs-parent="#faqAccordion" id="collapseNine">
                                         <div class="accordion-body text-muted">
-                                            Before issuing an OTP challenge, <code>_create_otp_challenge()</code> verifies that the target user has a non-empty <code>email</code> field configured. If no valid email address is found, challenge generation is blocked, an error is raised, and the user is instructed to contact an administrator to update their profile email.
+                                            Before issuing an OTP challenge, the system verifies that the target user has a valid email address configured. If no valid email address is found, challenge generation is blocked, an error is raised, and the user is instructed to contact an administrator to update their profile email.
                                         </div>
                                     </div>
                                 </div>
@@ -1657,7 +1657,7 @@
                                     </h2>
                                     <div aria-labelledby="headingTen" class="accordion-collapse collapse" data-bs-parent="#faqAccordion" id="collapseTen">
                                         <div class="accordion-body text-muted">
-                                            To prevent race conditions and token replay attacks, requesting a new OTP code automatically identifies all existing <code>pending</code> challenges for that user session and immediately marks their state as <code>cancelled</code>. Only the latest active challenge token can be verified.
+                                            To prevent race conditions and token replay attacks, requesting a new OTP code automatically identifies all existing pending challenges for that user session and immediately cancels them. Only the latest active challenge token can be verified.
                                         </div>
                                     </div>
                                 </div>
@@ -1670,7 +1670,7 @@
                                     </h2>
                                     <div aria-labelledby="headingEleven" class="accordion-collapse collapse" data-bs-parent="#faqAccordion" id="collapseEleven">
                                         <div class="accordion-body text-muted">
-                                            Yes. An automated background cron process (<code>_cron_cleanup_otp_records</code>) runs regularly to delete historical challenge records in <code>verified</code>, <code>expired</code>, <code>failed</code>, or <code>cancelled</code> states older than 7 days, maintaining clean database hygiene.
+                                            Yes. An automated background process runs regularly to delete historical challenge records older than 7 days, maintaining clean database hygiene.
                                         </div>
                                     </div>
                                 </div>
@@ -1683,7 +1683,7 @@
                                     </h2>
                                     <div aria-labelledby="headingTwelve" class="accordion-collapse collapse" data-bs-parent="#faqAccordion" id="collapseTwelve">
                                         <div class="accordion-body text-muted">
-                                            The module integrates directly into Odoo's native Multi-Factor Authentication pipeline (<code>_mfa_type</code> and <code>_mfa_url</code>). Upon primary password validation, Odoo redirects the session to <code>/web/otp/verify</code>, rendering an interactive JS-driven verification interface with auto-focus inputs, visual resend timer, and instant validation response.
+                                            The module integrates directly into Odoo's native Multi-Factor Authentication pipeline. Upon primary password validation, Odoo redirects the session to a secure verification page, rendering an interactive verification interface with auto-focus inputs, visual resend timer, and instant validation response.
                                         </div>
                                     </div>
                                 </div>
@@ -1696,23 +1696,11 @@
                                     </h2>
                                     <div aria-labelledby="headingThirteen" class="accordion-collapse collapse" data-bs-parent="#faqAccordion" id="collapseThirteen">
                                         <div class="accordion-body text-muted">
-                                            During OTP generation, resend, and verification, the module captures the client request headers (<code>request.httprequest.remote_addr</code> and <code>User-Agent</code>). This information is stored alongside the audit log entry, enabling security teams to inspect suspicious login attempts from unexpected IP addresses or browsers.
+                                            During OTP generation, resend, and verification, the module captures the client request details such as IP address and browser type. This information is stored alongside the audit log entry, enabling security teams to inspect suspicious login attempts from unexpected IP addresses or browsers.
                                         </div>
                                     </div>
                                 </div>
-                                <!-- FAQ 14 -->
-                                <div class="accordion-item border-0 mb-3 rounded-4 shadow-sm">
-                                    <h2 class="accordion-header" id="headingFourteen" style="font-family: 'Montserrat', sans-serif">
-                                        <div aria-controls="collapseFourteen" aria-expanded="false" class="accordion-button rounded-4 fw-bold text-dark collapsed cursor-pointer" data-bs-target="#collapseFourteen" data-bs-toggle="collapse" style="background-color: #f8f9fa">
-                                            14. How can administrators handle emergency account recovery if mail delivery fails?
-                                        </div>
-                                    </h2>
-                                    <div aria-labelledby="headingFourteen" class="accordion-collapse collapse" data-bs-parent="#faqAccordion" id="collapseFourteen">
-                                        <div class="accordion-body text-muted">
-                                            System administrators with System Manager rights (<code>base.group_system</code>) can inspect active OTP challenges under <strong>Settings → OTP Requests</strong>. If outbound mail server issues occur, administrators can review challenge states or temporarily disable the <code>Require OTP &amp; Email Authentication</code> toggle on the user record to restore immediate access.
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
